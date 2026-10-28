@@ -22,6 +22,11 @@ const seed = [
 
 const splitLines = value => value.split('\n').map(x => x.trim()).filter(Boolean);
 
+const showMessage = (title, message) => {
+ if (Platform.OS === 'web' && typeof window !== 'undefined') window.alert(`${title}\n\n${message}`);
+ else Alert.alert(title, message);
+};
+
 export default function App() {
  const [recipes,setRecipes] = useState(seed);
  const [favorites,setFavorites] = useState(['1']);
@@ -44,11 +49,19 @@ export default function App() {
  const newRecipe = () => { setEditing(null); setDraft({name:'',category:'Dinner',image:'',minutes:'25 min',servings:'2',calories:'400',difficulty:'Easy',ingredients:'',steps:''}); setPage('form'); };
  const editRecipe = recipe => { setEditing(recipe); setDraft({...recipe,ingredients:recipe.ingredients.join('\n'),steps:recipe.steps.join('\n'),servings:String(recipe.servings),calories:String(recipe.calories)}); setPage('form'); };
  const saveRecipe = () => {
-  if(!draft.name?.trim() || !splitLines(draft.ingredients||'').length || !splitLines(draft.steps||'').length) { Alert.alert('A little more detail', 'Add a recipe name, ingredients, and at least one step.'); return; }
+  if(!draft.name?.trim() || !splitLines(draft.ingredients||'').length || !splitLines(draft.steps||'').length) { showMessage('A little more detail', 'Add a recipe name, ingredients, and at least one step.'); return; }
   const saved={...draft,id:editing?.id || `mine-${Date.now()}`,name:draft.name.trim(),image:draft.image || 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=85',servings:parseInt(draft.servings,10)||2,calories:parseInt(draft.calories,10)||400,ingredients:splitLines(draft.ingredients),steps:splitLines(draft.steps),mine:true};
   setRecipes(curr => editing ? curr.map(r=>r.id===editing.id?saved:r) : [saved,...curr]); setSection('My Food'); setCategory('All'); setActive(saved); setPage('detail');
  };
- const deleteRecipe = recipe => Alert.alert('Delete recipe?', `“${recipe.name}” will be removed from My Food.`, [{text:'Cancel',style:'cancel'},{text:'Delete',style:'destructive',onPress:()=>{setRecipes(curr=>curr.filter(r=>r.id!==recipe.id));setFavorites(curr=>curr.filter(id=>id!==recipe.id));}}]);
+ const deleteRecipe = recipe => {
+  const remove = () => { setRecipes(curr=>curr.filter(r=>r.id!==recipe.id)); setFavorites(curr=>curr.filter(id=>id!==recipe.id)); };
+  const message = `“${recipe.name}” will be removed from My Food.`;
+  if (Platform.OS === 'web' && typeof window !== 'undefined') {
+   if (window.confirm(`Delete recipe?\n\n${message}`)) remove();
+   return;
+  }
+  Alert.alert('Delete recipe?', message, [{text:'Cancel',style:'cancel'},{text:'Delete',style:'destructive',onPress:remove}]);
+ };
  const uploadImage = async () => { const result=await ImagePicker.launchImageLibraryAsync({mediaTypes:['images'],allowsEditing:true,quality:0.85}); if(!result.canceled) setDraft(curr=>({...curr,image:result.assets[0].uri})); };
  const openRecipe = recipe => { setActive(recipe); setPage('detail'); };
  const changeSection = item => { if(item==='Favorites' || item==='My Food') {setSection(item);setCategory('All');} else {setSection('Home');setCategory(item);} };
