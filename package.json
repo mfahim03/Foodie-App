@@ -8,10 +8,10 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~58.0.0",
-    "expo-image-picker": "~58.0.10",
-    "expo-status-bar": "~58.0.4",
-    "react": "^19.3.0",
-    "react-native": "^0.88.0"
+    "expo": "~54.0.38",
+    "expo-image-picker": "~17.0.11",
+    "expo-status-bar": "~3.0.9",
+    "react": "19.1.0",
+    "react-native": "0.81.5"
   }
 }

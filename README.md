@@ -11,9 +11,10 @@ npx expo start
 
 ## Peer review answers
 
-**Public GitHub repository:** Not published yet. This workspace has no GitHub remote connected. After publishing, put the public URL here so reviewers can import it into Snack.
+**Public GitHub repository:** https://github.com/mfahim03/Foodie-App
+**Snack project:** https://snack.expo.dev/@git/github.com/mfahim03/Foodie-App
 
-1. **Imported into Snack from GitHub?** Not yet. The project has an Expo entry point and Expo configuration, but it still needs a public GitHub repository before the import step can be completed.
+1. **Imported into Snack from GitHub?** Yes. The public repository was imported into Snack using Import Git Repository. The project targets Expo SDK 54 for compatibility with iPhone Expo Go.
 2. **At least 10 horizontal recipe categories?** Yes. The bar includes All, Breakfast, Lunch, Dinner, Dessert, Vegetarian, Vegan, Quick & Easy, Healthy, Snacks, Seafood, Favorites, and My Food.
 3. **Complete recipe details?** Yes. Recipe detail screens show ingredients, step-by-step instructions, preparation time, servings, calories, and difficulty.
 4. **Category filtering?** Yes. Selecting a food category filters the feed to matching recipes.
